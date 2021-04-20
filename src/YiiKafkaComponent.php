@@ -2,6 +2,8 @@
 
 namespace yii2Kafka;
 
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
 use Psr\Log\LoggerInterface;
 use yii2Kafka\exceptions\RuntimeException;
 use yii2Kafka\interfaces\{KafkaAdapterInterface, KafkaConsumerInterface, KafkaLoggerInterface, KafkaProducerInterface};
@@ -15,7 +17,9 @@ class YiiKafkaComponent extends Component
     public $version = '1.0.0';
     public $params = [];
     public $loggerFactory;
-    public $logger;
+    public $defaultLogPath = '@runtime/logs/kafka.log';
+    public $defaultLogLevel = Logger::DEBUG;
+    public $debugMode = false;
 
     /**
      * @var KafkaAdapterInterface
@@ -31,16 +35,26 @@ class YiiKafkaComponent extends Component
         $config->setBrokers($this->brokers);
         $this->adapterClient->setConfig($config);
 
-        if (!empty($this->loggerFactory)) {
-            $logger = $this->getLogger();
-            $this->adapterClient->setLogger($logger);
-        }
+        $logger = $this->getLogger();
+        $this->adapterClient->setLogger($logger);
+        $this->adapterClient->setDebugMode($this->debugMode);
 
         parent::init();
     }
 
+    protected function getDefaultLogger(): LoggerInterface
+    {
+        $logger = new Logger('kafka');
+        $logger->pushHandler(new StreamHandler(\Yii::getAlias($this->defaultLogPath), $this->defaultLogLevel));
+        return $logger;
+    }
+
     protected function getLogger(): LoggerInterface
     {
+        if (empty($this->loggerFactory)) {
+            return $this->getDefaultLogger();
+        }
+
         if (is_callable($this->loggerFactory)) {
             $loggerFactory = call_user_func($this->loggerFactory);
             return $loggerFactory->getLogger();

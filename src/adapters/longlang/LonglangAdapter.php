@@ -34,6 +34,7 @@ class LonglangAdapter extends BaseKafkaAdapter implements KafkaAdapterInterface
 
             self::$producer = new LonglangProducer(new Producer($extConfig));
             self::$producer->setLogger($this->logger);
+            self::$producer->setDebugMode($this->debugMode);
         }
 
         return self::$producer;
@@ -63,6 +64,7 @@ class LonglangAdapter extends BaseKafkaAdapter implements KafkaAdapterInterface
 
         $consumer = new LonglangConsumer(new Consumer($clientConfig));
         $consumer->setLogger($this->logger);
+        $consumer->setDebugMode();
         return $consumer;
     }
 }

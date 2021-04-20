@@ -17,6 +17,11 @@ abstract class BaseKafkaAdapter
      */
     protected $logger;
 
+    /**
+     * @var bool
+     */
+    protected $debugMode;
+
     public function __construct(Config $config)
     {
         $this->config = $config;
@@ -25,5 +30,10 @@ abstract class BaseKafkaAdapter
     public function setLogger(LoggerInterface $logger): void
     {
         $this->logger = $logger;
+    }
+
+    public function setDebugMode(bool $debugMode): void
+    {
+        $this->debugMode = $debugMode;
     }
 }

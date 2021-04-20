@@ -4,7 +4,7 @@ namespace yii2Kafka;
 
 use yii2Kafka\exceptions\DomainException;
 
-class Message
+class Message implements \JsonSerializable
 {
     private $topicName;
     private $value;
@@ -38,5 +38,10 @@ class Message
     public function key(): string
     {
         return $this->key;
+    }
+
+    public function jsonSerialize()
+    {
+        return get_object_vars($this);
     }
 }

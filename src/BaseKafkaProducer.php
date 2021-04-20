@@ -18,7 +18,7 @@ abstract class BaseKafkaProducer
 
     public function send(string $topicName, $value, $key = '')
     {
-        $this->debug('Send message: ' . json_encode(['topic' => $topicName, 'value' => $value]));
+        $this->debug('Send message: ' . json_encode(['topic' => $topicName, 'value' => $value, 'key' => $key]));
 
         try {
             $this->sendInternal($topicName, $value, $key);

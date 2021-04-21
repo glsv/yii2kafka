@@ -21,7 +21,7 @@ class ConsumerClientParamsHelper
         return $params;
     }
 
-    public static function validateParams(array $params)
+    public static function validateParams(array $params): void
     {
         if (!isset($params['topic'])) {
             throw new InvalidConfigException('consumer[topic] must be set in the params');

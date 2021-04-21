@@ -3,10 +3,11 @@
 namespace yii2Kafka\adapters\nmred;
 
 use yii2Kafka\exceptions\InvalidConfigException;
+use yii2Kafka\ConsumerConfig;
 
 class ConsumerClientParamsHelper
 {
-    public static function prepareParams(array $globalConfig, array $consumerConfig, ?\yii2Kafka\ConsumerConfig $config = null)
+    public static function prepareParams(array $globalConfig, array $consumerConfig, ?ConsumerConfig $config = null): array
     {
         $params = [];
 

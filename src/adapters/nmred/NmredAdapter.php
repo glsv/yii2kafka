@@ -54,7 +54,7 @@ class NmredAdapter extends BaseKafkaAdapter implements KafkaAdapterInterface
 
         $params = ConsumerClientParamsHelper::prepareParams($cfgGlobal, $cfgConsumer, $config);
 
-        $clientConfig = \Kafka\ConsumerConfig::getInstance();
+        $clientConfig = ConsumerConfig::getInstance();
         $this->initClientConfig($clientConfig, $params);
 
         $clientConsumer = new Consumer();
@@ -77,7 +77,7 @@ class NmredAdapter extends BaseKafkaAdapter implements KafkaAdapterInterface
 
     protected function configureProducer(): void
     {
-        $extConfig = \Kafka\ProducerConfig::getInstance();
+        $extConfig = ProducerConfig::getInstance();
         $extConfig->setMetadataBrokerList($this->config->brokerListForKafka());
 
         $cfgGlobal = $this->params['global'] ?? [];

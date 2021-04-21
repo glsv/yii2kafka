@@ -56,7 +56,7 @@ class LonglangAdapter extends BaseKafkaAdapter implements KafkaAdapterInterface
         return self::$consumer;
     }
 
-    public function createConsumer(ConsumerConfig $config): LonglangConsumer
+    public function createConsumer(ConsumerConfig $config): KafkaConsumerInterface
     {
         $params = ConsumerClientParamsHelper::prepareParams($this->params['consumer'], $config);
         $clientConfig = new ClientConfig($params);
@@ -64,7 +64,7 @@ class LonglangAdapter extends BaseKafkaAdapter implements KafkaAdapterInterface
 
         $consumer = new LonglangConsumer(new Consumer($clientConfig));
         $consumer->setLogger($this->logger);
-        $consumer->setDebugMode();
+        $consumer->setDebugMode($this->debugMode);
         return $consumer;
     }
 }

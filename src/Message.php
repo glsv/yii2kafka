@@ -30,7 +30,7 @@ class Message implements \JsonSerializable
         return $this->value;
     }
 
-    public function setKey(string $key)
+    public function setKey(string $key): void
     {
         $this->key = $key;
     }

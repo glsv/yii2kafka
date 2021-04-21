@@ -27,14 +27,14 @@ trait LoggerTrait
         $this->debugMode = $mode;
     }
 
-    public function debug($message, array $context = [])
+    public function debug($message, array $context = []): void
     {
         if ($this->debugMode) {
             $this->log(LogLevel::DEBUG, $message, $context);
         }
     }
 
-    public function log($level, $message, array $context = [])
+    public function log($level, $message, array $context = []): void
     {
         if ($this->logger === null) {
             return;

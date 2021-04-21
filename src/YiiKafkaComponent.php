@@ -26,7 +26,7 @@ class YiiKafkaComponent extends Component
      */
     protected $adapterClient;
 
-    public function init()
+    public function init(): void
     {
         $this->validateParams();
         $this->adapterClient = \Yii::createObject($this->adapter);
@@ -76,6 +76,8 @@ class YiiKafkaComponent extends Component
 
             return $loggerFactory->getLogger();
         }
+
+        throw new RuntimeException('logger creation error');
     }
 
     protected function validateParams(): void

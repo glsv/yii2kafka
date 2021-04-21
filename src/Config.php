@@ -6,7 +6,7 @@ class Config
 {
     private $brokers = [];
 
-    public function addBroker(string $broker)
+    public function addBroker(string $broker): void
     {
         $this->brokers[] = $broker;
     }

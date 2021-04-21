@@ -57,7 +57,7 @@ class NmredProducer extends BaseKafkaProducer implements KafkaProducerInterface
         $this->producer->send($packet);
     }
 
-    private function checkTopicInKafka(string $topicName)
+    private function checkTopicInKafka(string $topicName): void
     {
         if ($this->topicNames === null) {
             $broker = \Kafka\Broker::getInstance();

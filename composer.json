@@ -11,9 +11,17 @@
         }
     ],
     "require": {
-        "yiisoft/yii2": "2.0.41.1"
+        "php": ">=7.2.0",
+        "yiisoft/yii2": "~2.0.0",
+        "monolog/monolog": "^2.2"
     },
     "autoload": {
         "psr-4": { "yii2Kafka\\": "src" }
-    }
+    },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://asset-packagist.org"
+        }
+    ]
 }

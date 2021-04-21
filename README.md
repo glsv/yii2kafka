@@ -2,7 +2,7 @@
 
 Install
 ---
-```php composer require glsv/yii2kafka```
+```php composer require glsv/yii2kafka:dev-master```
 
 Supported php-clients
 ---

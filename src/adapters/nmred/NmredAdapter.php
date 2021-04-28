@@ -2,8 +2,9 @@
 
 namespace yii2Kafka\adapters\nmred;
 
-use Kafka\{Consumer, ConsumerConfig, ProducerConfig};
+use Kafka\{Consumer, ConsumerConfig, Producer, ProducerConfig};
 use yii2Kafka\{Config, BaseKafkaAdapter};
+use yii2Kafka\ConsumerConfig as YiiConsumerConfig;
 use yii2Kafka\exceptions\{DomainException, InvalidConfigException};
 use yii2Kafka\interfaces\{KafkaAdapterInterface, KafkaConsumerInterface, KafkaProducerInterface};
 
@@ -19,29 +20,42 @@ class NmredAdapter extends BaseKafkaAdapter implements KafkaAdapterInterface
      */
     private static $consumer;
 
+    private static $clientProducer;
+
     public function getProducer(): KafkaProducerInterface
     {
         if (self::$producer === null) {
-            $this->configureProducer();
-            $clientProducer = new \Kafka\Producer();
-            if ($this->logger) {
+            $clientProducer = $this->getClientProducer();
+            if (null !== $this->logger) {
                 $clientProducer->setLogger($this->logger);
             }
 
             self::$producer = new NmredProducer($clientProducer);
-            self::$producer->setLogger($this->logger);
-            // Disable logging mode because it is already enabled in the Nmred client
-            self::$producer->setDebugMode(false);
+            if (null !== $this->logger) {
+                self::$producer->setLogger($this->logger);
+                // Disable logging mode because it is already enabled in the Nmred client
+                self::$producer->setDebugMode(false);
+            }
         }
 
         return self::$producer;
     }
 
+    protected function getClientProducer(): Producer
+    {
+        if (null === static::$clientProducer) {
+            $this->configureProducer();
+            self::$clientProducer = new Producer();
+        }
+
+        return self::$clientProducer;
+    }
+
     public function getConsumer(): KafkaConsumerInterface
     {
         if (self::$consumer === null) {
-            ConsumerClientParamsHelper::validateParams($this->params['consumer']);
-            self::$consumer = $this->createConsumer(new \yii2Kafka\ConsumerConfig($this->params['consumer']['topics']));
+            ConsumerClientParamsHelper::validateParams($this->params['consumer'] ?? []);
+            self::$consumer = $this->createConsumer(new YiiConsumerConfig($this->params['consumer']['topics']));
         }
 
         return self::$consumer;
@@ -63,9 +77,11 @@ class NmredAdapter extends BaseKafkaAdapter implements KafkaAdapterInterface
         }
 
         $consumer = new NmredConsumer($clientConsumer);
-        $consumer->setLogger($this->logger);
-        // Disable logging mode because it is already enabled in the Nmred client
-        $consumer->setDebugMode(false);
+        if ($this->logger !== null) {
+            $consumer->setLogger($this->logger);
+            // Disable logging mode because it is already enabled in the Nmred client
+            $consumer->setDebugMode(false);
+        }
 
         return $consumer;
     }

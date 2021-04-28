@@ -21,7 +21,7 @@ class NmredProducer extends BaseKafkaProducer implements KafkaProducerInterface
         $this->producer = $producer;
     }
 
-    public function sendInternal(string $topicName, $value, $key = ''): void
+    protected function sendInternal(string $topicName, $value, $key = ''): void
     {
         if ($topicName === "") {
             throw new RuntimeException('topic name is empty');

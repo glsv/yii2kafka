@@ -2,6 +2,7 @@
 
 namespace yii2Kafka;
 
+use yii2Kafka\exceptions\DomainException;
 use yii2Kafka\exceptions\RuntimeException;
 use yii2Kafka\traits\LoggerTrait;
 
@@ -22,6 +23,8 @@ abstract class BaseKafkaProducer
 
         try {
             $this->sendInternal($topicName, $value, $key);
+        } catch (RuntimeException | DomainException $exc) {
+            throw $exc;
         } catch (\Exception $exc) {
             throw new RuntimeException(sprintf("Error send via client %s", static::class), 0, $exc);
         }

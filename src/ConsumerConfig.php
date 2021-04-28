@@ -46,7 +46,7 @@ class ConsumerConfig
         return $this->client_id;
     }
 
-    public function setGroupIp(string $group_id): void
+    public function setGroupId(string $group_id): void
     {
         $this->group_id = $group_id;
     }
